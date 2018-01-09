@@ -52,7 +52,6 @@ unsigned ctimephash(uint32_t qx, uint32_t qy, unsigned n) {
 	return res >> (32 - 2 * n);
 }
 
-
 unsigned phash(float x, float y, unsigned n) {
 	union uf32 nx = { .f = f32sanitize(x) };
 	union uf32 ny = { .f = f32sanitize(y) };
@@ -67,7 +66,7 @@ unsigned phash(float x, float y, unsigned n) {
 	case 2:
 		return ((qx >> 28) & 8) | ((qy >> 29) & 4) | ((qx >> 29) & 2) |
 			((qy >> 30) & 1);
-	case 4:
+	case 3:
 		return ((qx >> 26) & 32) | ((qy >> 27) & 16) |
 			((qx >> 27) & 8) | ((qy >> 28) & 4) | ((qx >> 28) & 2) |
 			((qy >> 29) & 1);
