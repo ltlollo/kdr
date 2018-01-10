@@ -57,22 +57,22 @@ unsigned phash(float x, float y, unsigned n) {
 	union uf32 ny = { .f = f32sanitize(y) };
 	uint32_t qx = quadrant(nx.u);
 	uint32_t qy = quadrant(ny.u);
+	unsigned res = 0;
 
-	switch (n) {
-	case 0:
-		return 0;
-	case 1:
-		return ((qx >> 30) & 2) | (qy >> 31);
-	case 2:
-		return ((qx >> 28) & 8) | ((qy >> 29) & 4) | ((qx >> 29) & 2) |
-			((qy >> 30) & 1);
-	case 3:
-		return ((qx >> 26) & 32) | ((qy >> 27) & 16) |
-			((qx >> 27) & 8) | ((qy >> 28) & 4) | ((qx >> 28) & 2) |
-			((qy >> 29) & 1);
-	default:
-		return ctimephash(qx, qy, n);
+	if (n < 4) {
+		if (n > 0) {
+			res = ((qx >> 30) & 2) | (qy >> 31);
+		}
+		if (n > 1) {
+			res = (res << 2) | ((qx >> 29) & 2) | ((qy >> 30) & 1);
+		}
+		if (n > 2) {
+			res = (res << 2) | ((qx >> 28) & 2) | ((qy >> 29) & 1);
+		}
+	} else {
+		res = ctimephash(qx, qy, n);
 	}
+	return res;
 }
 
 #endif // PHASH_H
